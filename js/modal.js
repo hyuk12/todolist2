@@ -47,7 +47,8 @@ class ModalEvent {
             todoDateTime: setTodoDateTime.length < 2 ? + new Date() : setTodoDateTime,
             todoTitle: null,
             todoContent: null,
-            todoState: null
+            todoState: null,
+            todoCompleteAt: null
         }
 
         modalAddButton.onclick = () => {
@@ -62,6 +63,8 @@ class ModalEvent {
             ModalService.getInstance().closeWindow();
         }
     }
+
+
 
     addEventClickToModify() {
         const modalModifyButton = document.querySelector(".modal-modify-button");
@@ -116,6 +119,7 @@ class ModalEvent {
             pastTodo.todoTitle = title.value;
             pastTodo.todoContent = content.value;
             pastTodo.todoState = state.checked ? "done" : "inprogress";
+            pastTodo.todoCompleteAt = state.checked ? now.getTime() : null;
 
             TodoService.getInstance().updateLocalStorage();
             ModalService.getInstance().closeWindow();
@@ -176,9 +180,13 @@ class ModalService {
         const selectedItem = TodoService.getInstance().todoList[index];
         console.log(selectedItem.todoDateTime);
         const time = new Date(selectedItem.todoDateTime);
+        const completeAt = selectedItem.todoCompleteAt != null? new Date(selectedItem.todoCompleteAt) : null;
         modalSection.innerHTML = `
                 <div class="todo-time">
-                    <input type="time" value="${time.getHours() < 10 ? "0" + time.getHours() : time.getHours()}:${time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()}" disabled="true">
+                    <label for="picker">시작 시간</label>
+                    <input type="time" id="picker" value="${time.getHours() < 10 ? "0" + time.getHours() : time.getHours()}:${time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()}" disabled="true">
+                    ${completeAt != null ? `<label for="complete">완료 시간</label>`:""}
+                    ${completeAt != null ? `<input type="time" id="complete"  value="${completeAt.getHours() < 10 ? "0" + completeAt.getHours() : completeAt.getHours()}:${completeAt.getMinutes() < 10 ? "0" + completeAt.getMinutes() : completeAt.getMinutes()}" disabled>` : ''}
                 </div>
                 <div class="todo-modal-content">
                     <div class="todo-title-container">
@@ -211,6 +219,7 @@ class ModalService {
         ModalEvent.getInstance().addEventCancelClick();
         this.showWindow();
     }
+
 
     showWindow() {
         const modalContainer = document.querySelector(".todo-modal-container");
