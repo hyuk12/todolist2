@@ -123,7 +123,9 @@ class TodoService {
         })
 
         if (this.todoList.length < 1){
-            console.log("short");
+            todoContentList.innerHTML += `
+                ToDo 가 없습니다. 추가해주세요.
+            `;
         } else {
             this.todoList.forEach(todoObj => {
                 const time = new Date(todoObj.todoDateTime);
