@@ -43,7 +43,7 @@ class ModalEvent {
         });
 
         const todoObj = {
-            todoDate: `${this.convertDay(now.getDay())}`,
+            
             todoDateTime: setTodoDateTime.length < 2 ? + new Date() : setTodoDateTime,
             todoTitle: null,
             todoContent: null,
@@ -104,7 +104,7 @@ class ModalEvent {
             setTodoDateTime(selectedDate + (timeParts[0]) * 3600000 + timeParts[1] * 60000);
         });
 
-        pastTodo.todoDate = `${this.convertDay(now.getDay())}`;
+        
         pastTodo.todoDateTime = setTodoDateTime.length < 2 ? + pastTodo.todoDateTime : setTodoDateTime;
 
         modalApplyButton.onclick = () => {
